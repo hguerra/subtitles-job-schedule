@@ -43,7 +43,7 @@ def setup_logging(loglevel):
 
     today = dt.now().strftime(_date_formatter)
     filename = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..', 'logs', '{}_{}.log'.format(today, script_name))
+        os.path.join(os.path.dirname(__file__), '..', '..', 'logs', '{}_{}.log'.format(today, script_name))
     )
 
     logging.basicConfig(level=loglevel, filename=filename, format=logformat, datefmt=_datetime_formatter)
