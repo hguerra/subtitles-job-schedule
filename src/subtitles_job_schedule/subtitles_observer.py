@@ -121,7 +121,10 @@ def run():
     list_of_languages = []
     arg_language = str(os.environ.get('SUBTITLES_LANGUAGES', 'por BR')).split(',')
     for lang in arg_language:
-        list_of_languages.append(tuple(lang.split(' ')))
+        if ' ' in lang:
+            list_of_languages.append(tuple(lang.split(' ')))
+        else:
+            list_of_languages.append(lang)
 
     default_args = DotMap(
         {
