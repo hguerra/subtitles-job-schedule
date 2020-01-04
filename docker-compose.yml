@@ -2,7 +2,12 @@ version: "3.7"
 
 services:
   subtitles:
-    image: heitorcarneiro/subtitles-job-schedule:V0.0.1
+    image: heitorcarneiro/subtitles-job-schedule:V0.0.2
+    environment:
+      - SUBTITLES_LANGUAGES=por BR
+      - SUBTITLES_LOG_LEVEL=20
+      - SUBTITLES_RUN_EVERY_MINUTES=60
+      - SUBTITLES_VIDEOS_PATH=/tv,/movies
     volumes:
       - /data/storage/tv:/tv
       - /data/storage/movies:/movies
