@@ -94,8 +94,8 @@ def job(videos, human_languages):
 
         for path in videos:
             search(path, languages)
-    except:
-        _logger.error('Fail to search subtitle.')
+    except Exception:
+        _logger.exception('Fail to search subtitle.')
 
 
 def main(args):
@@ -105,7 +105,7 @@ def main(args):
       args ([str]): command line parameter list
     """
     setup_logging(args.loglevel)
-    _logger.info('Starting observer...')
+    _logger.info('Starting observer every {} minutes...'.format(args.minutes))
 
     schedule.every(args.minutes).minutes.do(job, videos=args.videos_path, human_languages=args.languages)
     while True:
@@ -117,15 +117,22 @@ def run():
     """
     Entry point for console_scripts
     """
+
+    list_of_languages = []
+    arg_language = str(os.environ.get('SUBTITLES_LANGUAGES', 'por BR')).split(',')
+    for lang in arg_language:
+        list_of_languages.append(tuple(lang.split(' ')))
+
     default_args = DotMap(
         {
-            'loglevel': logging.INFO,
-            'minutes': 10,
-            'videos_path': ['/tv', '/movies'],
-            'languages': [('por', 'BR')]
+            'loglevel': int(os.environ.get('SUBTITLES_LOG_LEVEL', logging.INFO)),
+            'minutes': int(os.environ.get('SUBTITLES_RUN_EVERY_MINUTES', 60)),
+            'videos_path': str(os.environ.get('SUBTITLES_VIDEOS_PATH', '/tv,/movies')).split(','),
+            'languages': list_of_languages
         }
     )
 
+    print('Application Args: ' + str(default_args))
     main(default_args)
 
 
